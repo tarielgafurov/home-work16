@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 import MainHeader from './components/MainHeader/MainHeader';
+import AuthContext from './store/auth-context';
+import SwitchesSize from './components/ToggleSwitch';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [done,setdone] = useState(false)
 
   const loginHandler = (email, password) => {
     // We should of course check email and password
@@ -18,13 +21,21 @@ function App() {
 
   return (
     <React.Fragment>
-      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} />
-      <main>
+      <AuthContext.Provider value={{done:done,setDone:setdone}}>
+
+      <MainHeader isAuthenticated={isLoggedIn} onLogout={logoutHandler} d/>
+      
+      <main style={{backgroundColor: !done ? '' :'grey',height:'800px'}}>
+        
         {!isLoggedIn && <Login onLogin={loginHandler} />}
         {isLoggedIn && <Home onLogout={logoutHandler} />}
-      </main>
+      </main>  
+
+      </AuthContext.Provider>
+    
       
     </React.Fragment>
+    
   );
 }
 
